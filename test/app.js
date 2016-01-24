@@ -7,7 +7,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-  res.json({ok: true});
+  const authtoken = req.get("authtoken");
+  const headers   = authtoken ? {authtoken: authtoken} : {};
+
+  res.json(Object.assign({ok: true}, req.query, headers));
 });
 
 app.post("/", (req, res) => {
