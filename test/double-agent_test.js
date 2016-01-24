@@ -56,4 +56,12 @@ describe("double-agent", () => {
       expect(response.body).to.eql({ok: true, authtoken: "secret!"});
     });
   });
+
+  describe("DELETE requests", () => {
+    it("handles them well", async () => {
+      const response = await test.delete("/");
+      expect(response.status).to.be(200);
+      expect(response.text).to.eql("done");
+    });
+  });
 });
