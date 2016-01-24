@@ -2,9 +2,9 @@
   "name": "double-agent",
   "version": "1.0.0",
   "description": "A superagent based async/await friendly testing util",
-  "main": "lib/double-agent.js",
+  "main": "src/double-agent.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register test/**/*_test.js"
+    "test": "mocha --compilers js:babel-core/register test/**_test.js"
   },
   "repository": {
     "type": "git",

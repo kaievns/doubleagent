@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 
 const app = express();
 
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
@@ -25,6 +25,5 @@ app.put("/", (req, res) => {
 app.delete("/", (req, res) => {
   res.send("done");
 });
-
 
 export default app;

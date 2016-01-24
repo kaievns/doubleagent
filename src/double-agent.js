@@ -1,3 +1,5 @@
+var http    = require("http");
+var https   = require("https");
 var request = require("superagent");
 
 module.exports = function(app) {
@@ -26,11 +28,15 @@ module.exports = function(app) {
  * @return {Promives} response
  */
 function double_call(app, method, path, params, headers) {
+  var server = http.createServer(app);
+
   return new Promise(function(resolve, reject) {
-    var url = find_app_url(app);
+    var url = find_app_url(server);
     var req = build_request(method, url + path, params, headers);
 
     req.end(function(err, res) {
+      server.close();
+
       if (err) {
         reject(err);
       } else {
@@ -44,11 +50,16 @@ function double_call(app, method, path, params, headers) {
  * Binds the app to a http port and returns the
  * base url thing
  *
- * @param {Object} express|connect app
+ * @param {Object} http server
  * @return {String} base url
  */
-function find_app_url(app) {
+function find_app_url(server) {
+  !server.address() && server.listen(0);
 
+  var port     = server.address().port;
+  var protocol = server instanceof https.Server ? 'https' : 'http';
+
+  return protocol + '://127.0.0.1:' + port;
 }
 
 /**
