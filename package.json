@@ -24,5 +24,18 @@
   "bugs": {
     "url": "https://github.com/MadRabbit/double-agent/issues"
   },
-  "homepage": "https://github.com/MadRabbit/double-agent#readme"
+  "homepage": "https://github.com/MadRabbit/double-agent#readme",
+  "dependencies": {
+    "superagent": "^1.7.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.4.5",
+    "babel-plugin-syntax-async-functions": "^6.3.13",
+    "babel-plugin-transform-async-to-generator": "^6.4.6",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.4.5",
+    "body-parser": "^1.14.2",
+    "expect.js": "^0.3.1",
+    "express": "^4.13.4",
+    "mocha": "^2.3.4"
+  }
 }
