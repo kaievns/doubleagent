@@ -6,23 +6,25 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
+const headers = (req) => {
   const authtoken = req.get("authtoken");
-  const headers   = authtoken ? {authtoken: authtoken} : {};
+  return authtoken ? {authtoken: authtoken} : {};
+};
 
-  res.json(Object.assign({ok: true}, req.query, headers));
+app.get("/", (req, res) => {
+  res.json(Object.assign({ok: true}, req.query, headers(req)));
 });
 
 app.post("/", (req, res) => {
-  res.status(201).json({body: req.body});
+  res.status(201).json(Object.assign({ok: true}, req.body, headers(req)));
 });
 
 app.patch("/", (req, res) => {
-  res.json({body: req.body});
+  res.json(Object.assign({ok: true}, req.body, headers(req)));
 });
 
 app.put("/", (req, res) => {
-  res.json({body: req.body});
+  res.json(Object.assign({ok: true}, req.body, headers(req)));
 });
 
 app.delete("/", (req, res) => {

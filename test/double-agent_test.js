@@ -27,10 +27,33 @@ describe("double-agent", () => {
     it("handles header params", async () => {
       const response = await test.get("/", null, {authtoken: "secret!"});
       expect(response.status).to.be(200);
-      expect(response.body).to.eql({
-        ok:        true,
-        authtoken: "secret!"
-      });
+      expect(response.body).to.eql({ok: true, authtoken: "secret!"});
+    });
+  });
+
+  describe("POST requests", () => {
+    it("handles a simple case", async () => {
+      const response = await test.post("/");
+      expect(response.status).to.be(201);
+      expect(response.body).to.eql({ok: true});
+    });
+
+    it("handles text params", async () => {
+      const response = await test.post("/", "one=two");
+      expect(response.status).to.be(201);
+      expect(response.body).to.eql({ok: true, one: "two"});
+    });
+
+    it("handles the object params", async () => {
+      const response = await test.post("/", {one: "two"});
+      expect(response.status).to.be(201);
+      expect(response.body).to.eql({ok: true, one: "two"});
+    });
+
+    it("handles header params", async () => {
+      const response = await test.post("/", null, {authtoken: "secret!"});
+      expect(response.status).to.be(201);
+      expect(response.body).to.eql({ok: true, authtoken: "secret!"});
     });
   });
 });
