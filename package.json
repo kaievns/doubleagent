@@ -20,7 +20,7 @@
     "superagent"
   ],
   "author": "Nikolay Nemshilov",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/MadRabbit/double-agent/issues"
   },
