@@ -1,4 +1,4 @@
-# Double Agent
+# Double Agent [![Build Status](https://travis-ci.org/MadRabbit/doubleagent.svg?branch=master)](https://travis-ci.org/MadRabbit/doubleagent)
 
 `doubleagent` is an ES7 `async/await` compatible wrapper on top of
 [superagent](https://github.com/visionmedia/superagent) that makes testing of
