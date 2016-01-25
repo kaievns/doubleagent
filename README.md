@@ -27,8 +27,8 @@ import agent from "doubleagent";
 import app from "../src/app";
 
 describe("app", () => {
-  it("handles GET /", async () => {
-    const response = await agent(app).get("/");
+  it("handles GET /hello", async () => {
+    const response = await agent(app).get("/hello");
 
     expect(response.status).to.be(200);
     expect(response.body).to.eql({ok: true});
