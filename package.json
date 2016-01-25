@@ -1,14 +1,14 @@
 {
-  "name": "double-agent",
+  "name": "doubleagent",
   "version": "1.0.0",
   "description": "A superagent based async/await friendly testing util",
-  "main": "src/double-agent.js",
+  "main": "src/doubleagent.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register test/**_test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MadRabbit/double-agent.git"
+    "url": "git+https://github.com/MadRabbit/doubleagent.git"
   },
   "keywords": [
     "http",
@@ -22,9 +22,9 @@
   "author": "Nikolay Nemshilov",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/MadRabbit/double-agent/issues"
+    "url": "https://github.com/MadRabbit/doubleagent/issues"
   },
-  "homepage": "https://github.com/MadRabbit/double-agent#readme",
+  "homepage": "https://github.com/MadRabbit/doubleagent#readme",
   "dependencies": {
     "superagent": "^1.7.1"
   },

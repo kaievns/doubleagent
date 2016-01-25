@@ -1,6 +1,6 @@
 # Double Agent
 
-`double-agent` is an ES7 `async/await` compatible wrapper on top of
+`doubleagent` is an ES7 `async/await` compatible wrapper on top of
 [superagent](https://github.com/visionmedia/superagent) that makes testing of
 expressjs/connect apps easier in a modern environment.
 
@@ -19,11 +19,11 @@ app.get("/hello", (req, res) => {
 export default app;
 ```
 
-Now, `double-agent` allows you to test the app like it's 2016 out there:
+Now, `doubleagent` allows you to test the app like it's 2016 out there:
 
 ```js
 import { expect } from "chai";
-import agent from "double-agent";
+import agent from "doubleagent";
 import app from "../src/app";
 
 describe("app", () => {
@@ -46,7 +46,7 @@ There are two main points to this whole thing:
 Installation is straight forward
 
 ```
-npm install double-agent --save-dev
+npm install doubleagent --save-dev
 ```
 
 As for the API, the `agent(app)` call returns a object with all the basic HTTP

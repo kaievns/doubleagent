@@ -1,10 +1,10 @@
 import expect from "expect.js";
 import app    from "./app";
-import agent  from "../src/double-agent";
+import agent  from "../src/doubleagent";
 
 const test = agent(app);
 
-describe("double-agent", () => {
+describe("doubleagent", () => {
   describe("GET requests", () => {
     it("handles a simple case", async () => {
       const response = await test.get("/");
