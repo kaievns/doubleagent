@@ -57,6 +57,14 @@ describe("doubleagent", () => {
     });
   });
 
+  describe("PATCH requests", () => {
+    it("doesn't fail on http errors", async () => {
+      const response = await test.patch("/");
+      expect(response.status).to.be(401);
+      expect(response.body).to.eql({error: "authentication failed"});
+    });
+  });
+
   describe("DELETE requests", () => {
     it("handles them well", async () => {
       const response = await test.delete("/");

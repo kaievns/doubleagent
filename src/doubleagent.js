@@ -37,7 +37,7 @@ function double_call(app, method, path, params, headers) {
     req.end(function(err, res) {
       server.close();
 
-      if (err) {
+      if (err && (!res || err.status !== res.status)) {
         reject(err);
       } else {
         resolve(res);

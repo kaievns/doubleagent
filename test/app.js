@@ -20,7 +20,7 @@ app.post("/", (req, res) => {
 });
 
 app.patch("/", (req, res) => {
-  res.json(Object.assign({ok: true}, req.body, headers(req)));
+  res.status(401).json({error: "authentication failed"});
 });
 
 app.put("/", (req, res) => {

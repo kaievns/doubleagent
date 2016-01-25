@@ -1,6 +1,6 @@
 {
   "name": "doubleagent",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A superagent based async/await friendly testing util",
   "main": "src/doubleagent.js",
   "scripts": {
