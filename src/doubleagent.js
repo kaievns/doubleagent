@@ -5,14 +5,18 @@ var request = require("superagent");
 module.exports = function(app) {
   var api     = {};
   var methods = "get,head,post,put,patch,delete".split(",");
+  var server  = http.createServer(app);
 
   for (var i=methods.length; i--;) {
     api[methods[i]] = (function(method) {
       return function(path, params, headers) {
-        return double_call(app, method, path, params, headers);
+        return double_call(server, method, path, params, headers);
       };
     })(methods[i]);
   }
+
+  api.server = server;
+  api.app    = app;
 
   return api;
 };
@@ -20,16 +24,14 @@ module.exports = function(app) {
 /**
  * Makes the call to the app with specified params
  *
- * @param {Object} express/connect app
+ * @param {Object} http server
  * @param {String} HTTP method name
  * @param {String} path
  * @param {Object|String} body or query params
  * @param {Object} request headers
  * @return {Promives} response
  */
-function double_call(app, method, path, params, headers) {
-  var server = http.createServer(app);
-
+function double_call(server, method, path, params, headers) {
   return new Promise(function(resolve, reject) {
     var url = find_app_url(server);
     var req = build_request(method, url + path, params, headers);
