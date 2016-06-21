@@ -64,13 +64,22 @@ requests and as `body` for `POST`, `PUT`, etc.
 If you need to specify app wide default HTTP headers, just assign them to the
 `defaultHeaders` property:
 
-```
+```js
 agent.defaultHeaders = { Authorization: `Bearer ${token}` };
 agent.get('/some/url'); // <- will automatically send the headers
 ```
 
 __NOTE__ any headers that you send through with specific `#get`, `#post`, etc.
 requests _will override_ the `defaultHeaders` values.
+
+### Full URL Locations
+
+If you need to access a full URL location to the http server that runs underneath
+the `doubleagent` interface, please use the `#urlFor(path)` method;
+
+```js
+agent.urlFor('/users'); // -> 'http://127.0.0.1:0/users'
+```
 
 ## Copyright & License
 

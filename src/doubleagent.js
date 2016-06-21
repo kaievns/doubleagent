@@ -18,6 +18,9 @@ module.exports = function(app) {
 
   api.server = server;
   api.app    = app;
+  api.urlFor = function(path) {
+    return find_app_url(server) + path;
+  };
 
   return api;
 };
