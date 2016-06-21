@@ -59,6 +59,19 @@ agent(app)[method](path[, params[, headers]]) -> Promise
 __NOTE__: `params` are contextual, they are handled as `query` for `GET`/`HEAD`
 requests and as `body` for `POST`, `PUT`, etc.
 
+### Default Headers
+
+If you need to specify app wide default HTTP headers, just assign them to the
+`defaultHeaders` property:
+
+```
+agent.defaultHeaders = { Authorization: `Bearer ${token}` };
+agent.get('/some/url'); // <- will automatically send the headers
+```
+
+__NOTE__ any headers that you send through with specific `#get`, `#post`, etc.
+requests _will override_ the `defaultHeaders` values.
+
 ## Copyright & License
 
 All code in this library is released under the terms of the MIT license

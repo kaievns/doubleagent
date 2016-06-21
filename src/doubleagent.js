@@ -10,7 +10,8 @@ module.exports = function(app) {
   for (var i=methods.length; i--;) {
     api[methods[i]] = (function(method) {
       return function(path, params, headers) {
-        return double_call(server, method, path, params, headers);
+        var combined_headers = Object.assign({}, api.defaultHeaders, headers);
+        return double_call(server, method, path, params, combined_headers);
       };
     })(methods[i]);
   }
