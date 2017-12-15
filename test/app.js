@@ -1,5 +1,5 @@
-import express from "express";
-import bodyParser from "body-parser";
+const express = require("express");
+const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -31,4 +31,4 @@ app.delete("/", (req, res) => {
   res.send("done");
 });
 
-export default app;
+module.exports = app;

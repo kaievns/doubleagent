@@ -1,6 +1,6 @@
-import expect from "expect.js";
-import app    from "./app";
-import agent  from "../src/doubleagent";
+const expect = require("expect.js");
+const app    = require("./app");
+const agent  = require("../src/doubleagent");
 
 const test = agent(app);
 

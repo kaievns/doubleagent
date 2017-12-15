@@ -4,7 +4,7 @@
   "description": "A superagent based async/await friendly testing util",
   "main": "src/doubleagent.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register test/**_test.js"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -29,10 +29,6 @@
     "superagent": "^3.8.2"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-plugin-syntax-async-functions": "^6.13.0",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
     "body-parser": "^1.18.2",
     "expect.js": "^0.3.1",
     "express": "^4.16.2",
