@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "description": "A superagent based async/await friendly testing util",
   "main": "src/doubleagent.js",
+  "types": "src/doubleagent.d.ts",
   "scripts": {
     "test": "mocha"
   },
