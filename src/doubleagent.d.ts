@@ -1,5 +1,6 @@
 declare module 'doubleagent' {
-  import { Response, Application } from 'express';
+  import { Application } from 'express';
+  import { Response } from 'superagent';
 
   type ICall = (path: string, params?: object, headers?: object) => Response
 

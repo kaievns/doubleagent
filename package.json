@@ -27,12 +27,13 @@
   },
   "homepage": "https://github.com/MadRabbit/doubleagent#readme",
   "dependencies": {
-    "superagent": "^3.8.2"
+    "superagent": "^4.0.0-beta.5"
   },
   "devDependencies": {
-    "body-parser": "^1.18.2",
+    "@types/superagent": "^3.8.4",
+    "body-parser": "^1.18.3",
     "expect.js": "^0.3.1",
-    "express": "^4.16.2",
-    "mocha": "^4.0.1"
+    "express": "^4.16.3",
+    "mocha": "^5.2.0"
   }
 }
