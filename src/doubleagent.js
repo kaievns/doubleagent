@@ -9,9 +9,9 @@ module.exports = function(app) {
 
   for (var i=methods.length; i--;) {
     api[methods[i]] = (function(method) {
-      return function(path, params, headers) {
+      return function(path, params, headers, files) {
         var combined_headers = Object.assign({}, api.defaultHeaders, headers);
-        return double_call(server, method, path, params, combined_headers);
+        return double_call(server, method, path, params, combined_headers, files);
       };
     })(methods[i]);
   }
@@ -35,10 +35,10 @@ module.exports = function(app) {
  * @param {Object} request headers
  * @return {Promives} response
  */
-function double_call(server, method, path, params, headers) {
+function double_call(server, method, path, params, headers, files) {
   return new Promise(function(resolve, reject) {
     var url = find_app_url(server);
-    var req = build_request(method, url + path, params, headers);
+    var req = build_request(method, url + path, params, headers, files);
 
     req.end(function(err, res) {
       server.close();
@@ -77,14 +77,24 @@ function find_app_url(server) {
  * @param {Object} extra headers
  * @return {Object} superagent request
  */
-function build_request(method, url, params, headers) {
+function build_request(method, url, params, headers, files) {
   var req = request[method](url);
 
   if (params) {
-    if (method === "get" || method === "head") {
+    if (files) {
+      for (const param in params) {
+        req = req.field(param, params[param]);
+      }
+    } else if (method === "get" || method === "head") {
       req = req.query(params);
     } else {
       req = req.send(params);
+    }
+  }
+
+  if (files) {
+    for (const file in files) {
+      req = req.attach(file, files[file]);
     }
   }
 

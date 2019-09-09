@@ -53,11 +53,12 @@ As for the API, the `agent(app)` call returns a object with all the basic HTTP
 methods that all have the same API:
 
 ```
-agent(app)[method](path[, params[, headers]]) -> Promise
+agent(app)[method](path[, params[, headers[, files]]]) -> Promise
 ```
 
 __NOTE__: `params` are contextual, they are handled as `query` for `GET`/`HEAD`
 requests and as `body` for `POST`, `PUT`, etc.
+When files are passed the request changes into a multi-part form and params is treated as fields.
 
 ### Default Headers
 

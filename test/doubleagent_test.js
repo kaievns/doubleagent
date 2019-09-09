@@ -1,3 +1,4 @@
+const fs     = require("fs");
 const expect = require("expect.js");
 const app    = require("./app");
 const agent  = require("../src/doubleagent");
@@ -54,6 +55,18 @@ describe("doubleagent", () => {
       const response = await test.post("/", null, {authtoken: "secret!"});
       expect(response.status).to.be(201);
       expect(response.body).to.eql({ok: true, authtoken: "secret!"});
+    });
+
+    it("handles files", async () => {
+      const fields = {param: "two"};
+      const file = 'test/fixtures/small.pdf';
+      const response = await test.post("/echo", fields, null, { file });
+
+      expect(response.status).to.be(200);
+      expect(response.body).to.eql(fields);
+      expect(response.files.file.type).to.eql('application/pdf');
+      expect(response.files.file.name).to.eql('small.pdf');
+      expect(fs.readFileSync(response.files.file.path, 'utf8')).to.equal(fs.readFileSync(file, 'utf8'));
     });
   });
 
