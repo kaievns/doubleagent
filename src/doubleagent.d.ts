@@ -2,7 +2,7 @@ declare module 'doubleagent' {
   import { Application } from 'express';
   import { Response } from 'superagent';
 
-  type ICall = (path: string, params?: object, headers?: object, files?: object) => Response
+  type ICall = (path: string, params?: object, headers?: object, files?: object) => Promise<Response>
 
   interface IRESTInterface {
     get: ICall;
