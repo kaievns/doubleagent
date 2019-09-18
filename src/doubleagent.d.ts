@@ -1,4 +1,5 @@
 declare module 'doubleagent' {
+  import { Server } from 'http';
   import { Application } from 'express';
   import { Response } from 'superagent';
 
@@ -12,6 +13,7 @@ declare module 'doubleagent' {
     patch: ICall;
     delete: ICall;
 
+    server: Server;
     app: Application;
     urlFor: (path: string) => string;
   }
