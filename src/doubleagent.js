@@ -29,11 +29,12 @@ module.exports = function(app) {
  * Makes the call to the app with specified params
  *
  * @param {Object} http server
- * @param {String} HTTP method name
- * @param {String} path
- * @param {Object|String} body or query params
+ * @param {string} HTTP method name
+ * @param {string} path
+ * @param {Object|string} body or query params
  * @param {Object} request headers
- * @return {Promives} response
+ * @param {Object} file uploads
+ * @return {Promise<response>} response
  */
 function double_call(server, method, path, params, headers, files) {
   return new Promise(function(resolve, reject) {
@@ -57,7 +58,7 @@ function double_call(server, method, path, params, headers, files) {
  * base url thing
  *
  * @param {Object} http server
- * @return {String} base url
+ * @return {string} base url
  */
 function find_app_url(server) {
   !server.address() && server.listen(0);
@@ -71,10 +72,11 @@ function find_app_url(server) {
 /**
  * Builds the superagent request instance
  *
- * @param {String} method
- * @param {String} location
- * @param {Object} extra params (body for POSTs and query fro GETs)
+ * @param {string} method
+ * @param {string} location
+ * @param {Object} extra params (body for POSTs and query for GETs)
  * @param {Object} extra headers
+ * @param {Object} file uploads
  * @return {Object} superagent request
  */
 function build_request(method, url, params, headers, files) {
