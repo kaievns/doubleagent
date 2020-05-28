@@ -13,6 +13,21 @@ type Files = { [filename: string]: MultiPartValueSingle };
 
 type Method = 'get' | 'head' | 'post' | 'put' | 'patch' | 'delete';
 
+interface BaseOptions {
+  method: Method;
+  params?: Params;
+  headers?: Headers;
+  files?: Files;
+}
+
+interface Options extends BaseOptions {
+  path: Path;
+}
+
+interface RequestOptions extends BaseOptions {
+  url: string;
+}
+
 type SendRequest = (
   path: Path,
   params?: Params,
@@ -28,6 +43,7 @@ type DoubleAgent = {
   patch: SendRequest;
   delete: SendRequest;
 
+  defaultHeaders: object;
   app: Express;
   server: http.Server;
   urlFor: (path: string) => string;
@@ -59,13 +75,9 @@ const findAppUrl = (server: http.Server): string => {
  * @param {Object} file uploads
  * @return {Object} superagent request
  */
-const buildRequest = (
-  method: Method,
-  url: string,
-  params: Params,
-  headers: Headers,
-  files: Files
-): Request => {
+const buildRequest = (options: RequestOptions): Request => {
+  const { method, url, params, headers, files } = options;
+
   let req: Request = request[method](url);
 
   /* eslint-disable no-restricted-syntax,guard-for-in */
@@ -108,17 +120,12 @@ const buildRequest = (
  * @param {Object} file uploads
  * @return {Promise<response>} response
  */
-const doubleCall = (
-  server: http.Server,
-  method: Method,
-  path: Path,
-  params: Params,
-  headers: Headers,
-  files: Files
-): Promise<Response> =>
-  new Promise((resolve, reject) => {
+const doubleCall = (server: http.Server, options: Options): Promise<Response> => {
+  const { path, ...rest } = options;
+
+  return new Promise((resolve, reject) => {
     const url = findAppUrl(server);
-    const req = buildRequest(method, url + path, params, headers, files);
+    const req = buildRequest({ url: url + path, ...rest });
 
     req.end((err, res) => {
       server.close();
@@ -130,18 +137,19 @@ const doubleCall = (
       }
     });
   });
+};
 
 const agent = (app: Express): DoubleAgent => {
-  const api = {} as any;
+  const api: Partial<DoubleAgent> = {};
   const methods: Method[] = ['get', 'head', 'post', 'put', 'patch', 'delete'];
   const server = http.createServer(app);
 
   for (let i = methods.length; i--; ) {
     api[methods[i]] = (function(method) {
-      return (path: string, params: Params, headers: Headers, files: Files) => {
+      return (path: Path, params?: Params, headers?: Headers, files?: Files) => {
         // eslint-disable-next-line prefer-object-spread
         const combinedHeaders = Object.assign({}, api.defaultHeaders, headers);
-        return doubleCall(server, method, path, params, combinedHeaders, files);
+        return doubleCall(server, { method, path, params, headers: combinedHeaders, files });
       };
     })(methods[i]);
   }
@@ -150,7 +158,7 @@ const agent = (app: Express): DoubleAgent => {
   api.app = app;
   api.urlFor = (path: string): string => findAppUrl(server) + path;
 
-  return api;
+  return api as DoubleAgent;
 };
 
 export default agent;
