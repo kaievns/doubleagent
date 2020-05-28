@@ -74,11 +74,8 @@ const findAppUrl = (server: http.Server): string => {
 /**
  * Builds the superagent request instance
  *
- * @param {string} method
- * @param {string} location
- * @param {Object} extra params (body for POSTs and query for GETs)
- * @param {Object} extra headers
- * @param {Object} file uploads
+ * @param {Object} config contains configuration e.g. queryEncoder
+ * @param {Object} options for the request method, url, params, headers and files
  * @return {Object} superagent request
  */
 const buildRequest = (config: Config, options: RequestOptions): Request => {
@@ -120,13 +117,10 @@ const buildRequest = (config: Config, options: RequestOptions): Request => {
 /**
  * Makes the call to the app with specified params
  *
- * @param {Object} http server
- * @param {string} HTTP method name
- * @param {string} path
- * @param {Object|string} body or query params
- * @param {Object} request headers
- * @param {Object} file uploads
- * @return {Promise<response>} response
+ * @param {Object} httpServer
+ * @param {Object} config contains configuration e.g. queryEncoder
+ * @param {Object} options for the request method, path, params, headers and files
+ * @return {Promise<response>} response the http response
  */
 const doubleCall = (server: http.Server, config: Config, options: Options): Promise<Response> => {
   const { path, ...rest } = options;
