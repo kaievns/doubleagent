@@ -28,6 +28,10 @@ interface RequestOptions extends BaseOptions {
   url: string;
 }
 
+type Config = {
+  queryEncoder?: (query: object) => string;
+};
+
 type SendRequest = (
   path: Path,
   params?: Params,
@@ -48,6 +52,8 @@ type DoubleAgent = {
   server: http.Server;
   urlFor: (path: string) => string;
 };
+
+const isObject = (thing: any): thing is object => typeof thing === 'object' && thing !== null;
 
 /**
  * Binds the app to a http port and returns the
@@ -75,7 +81,8 @@ const findAppUrl = (server: http.Server): string => {
  * @param {Object} file uploads
  * @return {Object} superagent request
  */
-const buildRequest = (options: RequestOptions): Request => {
+const buildRequest = (config: Config, options: RequestOptions): Request => {
+  const { queryEncoder } = config;
   const { method, url, params, headers, files } = options;
 
   let req: Request = request[method](url);
@@ -87,7 +94,8 @@ const buildRequest = (options: RequestOptions): Request => {
         req = req.field(param, params[param]);
       }
     } else if (method === 'get' || method === 'head') {
-      req = req.query(params);
+      const query = queryEncoder && isObject(params) ? queryEncoder(params) : params;
+      req = req.query(query);
     } else {
       req = req.send(params);
     }
@@ -120,12 +128,12 @@ const buildRequest = (options: RequestOptions): Request => {
  * @param {Object} file uploads
  * @return {Promise<response>} response
  */
-const doubleCall = (server: http.Server, options: Options): Promise<Response> => {
+const doubleCall = (server: http.Server, config: Config, options: Options): Promise<Response> => {
   const { path, ...rest } = options;
 
   return new Promise((resolve, reject) => {
     const url = findAppUrl(server);
-    const req = buildRequest({ url: url + path, ...rest });
+    const req = buildRequest(config, { url: url + path, ...rest });
 
     req.end((err, res) => {
       server.close();
@@ -139,7 +147,7 @@ const doubleCall = (server: http.Server, options: Options): Promise<Response> =>
   });
 };
 
-const agent = (app: Express): DoubleAgent => {
+const agent = (app: Express, config: Config = {}): DoubleAgent => {
   const api: Partial<DoubleAgent> = {};
   const methods: Method[] = ['get', 'head', 'post', 'put', 'patch', 'delete'];
   const server = http.createServer(app);
@@ -147,9 +155,14 @@ const agent = (app: Express): DoubleAgent => {
   for (let i = methods.length; i--; ) {
     api[methods[i]] = (function(method) {
       return (path: Path, params?: Params, headers?: Headers, files?: Files) => {
-        // eslint-disable-next-line prefer-object-spread
-        const combinedHeaders = Object.assign({}, api.defaultHeaders, headers);
-        return doubleCall(server, { method, path, params, headers: combinedHeaders, files });
+        const combinedHeaders = { ...api.defaultHeaders, ...headers };
+        return doubleCall(server, config, {
+          method,
+          path,
+          params,
+          headers: combinedHeaders,
+          files,
+        });
       };
     })(methods[i]);
   }

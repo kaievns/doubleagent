@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as qs from 'qs';
 import { expect } from 'chai';
 import app from './app';
 import agent from '../src/doubleagent';
@@ -21,7 +22,7 @@ describe('doubleagent', () => {
       expect(response.body).to.eql({
         ok: true,
         one: '1',
-        two: '2'
+        two: '2',
       });
     });
 
@@ -85,6 +86,20 @@ describe('doubleagent', () => {
       const response = await test.delete('/');
       expect(response.status).to.equal(200);
       expect(response.text).to.eql('done');
+    });
+  });
+
+  describe('querystring encoding', () => {
+    const custom = agent(app, {
+      queryEncoder: query => qs.stringify(query, { arrayFormat: 'indices' }),
+    });
+
+    it('uses a custom encoder if provided', async () => {
+      const query = { array: [{ item: 'item' }] };
+
+      const response = await custom.get('/', query);
+      expect(response.status).to.equal(200);
+      expect(response.body).to.eql({ ok: true, ...query });
     });
   });
 });

@@ -12,11 +12,11 @@ const headers = req => {
 };
 
 app.get('/', (req, res) => {
-  res.json(Object.assign({ ok: true }, req.query, headers(req)));
+  res.json({ ok: true, ...req.query, ...headers(req) });
 });
 
 app.post('/', (req, res) => {
-  res.status(201).json(Object.assign({ ok: true }, req.body, headers(req)));
+  res.status(201).json({ ok: true, ...req.body, ...headers(req) });
 });
 
 app.patch('/', (req, res) => {
@@ -24,7 +24,7 @@ app.patch('/', (req, res) => {
 });
 
 app.put('/', (req, res) => {
-  res.json(Object.assign({ ok: true }, req.body, headers(req)));
+  res.json({ ok: true, ...req.body, ...headers(req) });
 });
 
 app.delete('/', (req, res) => {
