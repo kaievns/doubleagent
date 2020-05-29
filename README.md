@@ -84,7 +84,7 @@ import app from "../src/app";
 
 /* define a custom stringify function */
 const stringify = (query) => qs.stringify(query, { arrayFormat: 'indicies' });
-const test = agent(app, { queryEncoder: stringify });
+const test = agent(app, { serializer: stringify });
 
 describe("app", () => {
   it("handles GET /hello", async () => {

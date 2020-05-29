@@ -91,7 +91,7 @@ describe('doubleagent', () => {
 
   describe('querystring encoding', () => {
     const custom = agent(app, {
-      queryEncoder: query => qs.stringify(query, { arrayFormat: 'indices' }),
+      serializer: query => qs.stringify(query, { arrayFormat: 'indices' }),
     });
 
     it('uses a custom encoder if provided', async () => {

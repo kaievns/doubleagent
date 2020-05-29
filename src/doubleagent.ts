@@ -29,7 +29,7 @@ interface RequestOptions extends BaseOptions {
 }
 
 type Config = {
-  queryEncoder?: (query: object) => string;
+  serializer?: (query: object) => string;
 };
 
 type SendRequest = (
@@ -74,12 +74,12 @@ const findAppUrl = (server: http.Server): string => {
 /**
  * Builds the superagent request instance
  *
- * @param {Object} config contains configuration e.g. queryEncoder
+ * @param {Object} config contains configuration e.g. serializer
  * @param {Object} options for the request method, url, params, headers and files
  * @return {Object} superagent request
  */
 const buildRequest = (config: Config, options: RequestOptions): Request => {
-  const { queryEncoder } = config;
+  const { serializer } = config;
   const { method, url, params, headers, files } = options;
 
   let req: Request = request[method](url);
@@ -91,7 +91,7 @@ const buildRequest = (config: Config, options: RequestOptions): Request => {
         req = req.field(param, params[param]);
       }
     } else if (method === 'get' || method === 'head') {
-      const query = queryEncoder && isObject(params) ? queryEncoder(params) : params;
+      const query = serializer && isObject(params) ? serializer(params) : params;
       req = req.query(query);
     } else {
       req = req.send(params);
@@ -118,7 +118,7 @@ const buildRequest = (config: Config, options: RequestOptions): Request => {
  * Makes the call to the app with specified params
  *
  * @param {Object} httpServer
- * @param {Object} config contains configuration e.g. queryEncoder
+ * @param {Object} config contains configuration e.g. serializer
  * @param {Object} options for the request method, path, params, headers and files
  * @return {Promise<response>} response the http response
  */
