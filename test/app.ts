@@ -33,13 +33,6 @@ app.delete('/', (req, res) => {
 
 app.all('/echo', (req, res) => {
   const { headers } = req;
-  // if (process.env.HTTP2_TEST) {
-  //   Object.keys(headers).forEach(name => {
-  //     if (isPseudoHeader(name)) {
-  //       delete headers[name];
-  //     }
-  //   });
-  // }
 
   res.writeHead(200, headers);
   req.pipe(res);
