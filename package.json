@@ -1,6 +1,6 @@
 {
   "name": "doubleagent",
-  "version": "1.3.1",
+  "version": "2.0.0",
   "description": "A superagent based async/await friendly testing util",
   "files": [
     "dist"
